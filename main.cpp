@@ -90,6 +90,7 @@ int main()
     list squid_list[25];
     char ship_arr[25];
     char new_squid;
+    int curr_ship_pos =0;
     int temp;
     int threshold = 3;  //percent squids on screen
     char squid;
@@ -107,12 +108,39 @@ int main()
             squid_list[j].push_front(' ');  // initially no squids on screen when game starts
         }
     }
+    char key;
+    key = ' ';
     while(true)
     {
         gotoxy(0,0);    // to start printing fron start of terminal screen
         cout << "Use the UP\\DOWN arrow keys to move the ship.... Space bar to fire. ESC to quit" << endl;
         for(int j=0;j<25;j++)   //start printing squids and ship location on screen
         {
+            if(kbhit()) //check if any key is pressed
+            {
+                key = (char)getch();    //for up and down get key
+                key = (char)getch();
+                //UP:H
+                //DOWN:P
+                //Right:M
+                if(key == 'H')  //If Up
+                {
+                    if(curr_ship_pos>0) 
+                    {
+                        ship_arr[curr_ship_pos] = ' ';  //remove ship icon from old position
+                        curr_ship_pos--;    //decrememnt ship position
+                        ship_arr[curr_ship_pos] = '>';  //add ship icon on new position
+                    }
+                }else if(key == 'P') // If DOWN
+                {
+                    if(curr_ship_pos<24)
+                    {
+                        ship_arr[curr_ship_pos] = ' ';
+                        curr_ship_pos++;//same
+                        ship_arr[curr_ship_pos] = '>';
+                    }
+                }
+            }
             cout<<" "<<ship_arr[j]; //print ship location on screen
             temp = rand()%100;
             if(temp>threshold)  //check probability of squid
@@ -124,7 +152,6 @@ int main()
             squid_list[j].push_front(new_squid);//add squid/no squid in lsit
             squid_list[j].print_list(); //print squid list
             squid = squid_list[j].pop_back();   //remove left squid
-            
         }
         _sleep(250);
     }
