@@ -79,13 +79,26 @@ public:
     }
 };
 
+void gotoxy(int x, int y) { //move terminal cursor to position x,y for new output
+    COORD pos = {x, y};
+    HANDLE output = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleCursorPosition(output, pos);
+}
 
 int main()
 {
     list squid_list[25];
+    char ship_arr[25];
     char new_squid;
+    int temp;
+    int threshold = 3;  //percent squids on screen
     char squid;
     system("CLS");  //clear screen
+    ship_arr[0] = '>';  //ship initially
+    for(int i=1;i<25;i++)   //other than index 0 no ship so store ' '
+    {
+        ship_arr[i] = ' ';
+    }
     //120 per line
     for(int i=0;i<117;i++)  //size of horizontal squid list
     {
@@ -94,10 +107,26 @@ int main()
             squid_list[j].push_front(' ');  // initially no squids on screen when game starts
         }
     }
-    
-    for(int j=0;j<25;j++) //total 25 squid lists
+    while(true)
     {
-        squid_list[j].print_list();  // initially no squids on screen when game starts
+        gotoxy(0,0);    // to start printing fron start of terminal screen
+        cout << "Use the UP\\DOWN arrow keys to move the ship.... Space bar to fire. ESC to quit" << endl;
+        for(int j=0;j<25;j++)   //start printing squids and ship location on screen
+        {
+            cout<<" "<<ship_arr[j]; //print ship location on screen
+            temp = rand()%100;
+            if(temp>threshold)  //check probability of squid
+            {
+                new_squid = ' ';
+            }else{
+                new_squid = (char)157;
+            }
+            squid_list[j].push_front(new_squid);//add squid/no squid in lsit
+            squid_list[j].print_list(); //print squid list
+            squid = squid_list[j].pop_back();   //remove left squid
+            
+        }
+        _sleep(250);
     }
     return 0;
 }
