@@ -79,13 +79,25 @@ public:
     }
 };
 
+
 int main()
 {
-    list squid_list;
-    squid_list.push_back('a');
-    squid_list.push_back('b');
-    squid_list.push_back('c');
-    squid_list.push_back('d');
-    squid_list.print_list();
+    list squid_list[25];
+    char new_squid;
+    char squid;
+    system("CLS");  //clear screen
+    //120 per line
+    for(int i=0;i<117;i++)  //size of horizontal squid list
+    {
+        for(int j=0;j<25;j++) //total 25 squid lists
+        {
+            squid_list[j].push_front(' ');  // initially no squids on screen when game starts
+        }
+    }
+    
+    for(int j=0;j<25;j++) //total 25 squid lists
+    {
+        squid_list[j].print_list();  // initially no squids on screen when game starts
+    }
     return 0;
 }
